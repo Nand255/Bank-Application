@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionServiceImpl implements TransactionService {
 
-    @Autowired
+    final
     TransactionRepository transactionRepository;
+
+    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
     @Override
     public void saveTransaction(TransactionDto transactionDto) {

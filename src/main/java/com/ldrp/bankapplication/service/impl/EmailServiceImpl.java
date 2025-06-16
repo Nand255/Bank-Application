@@ -12,13 +12,15 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
 
 @Service
 @Slf4j
 public class EmailServiceImpl implements EmailService {
 
+    /**
+     * JavaMailSender is used to send simple mail messages.
+     */
     @Autowired
     private JavaMailSender javaMailSender;
 

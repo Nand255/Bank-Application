@@ -20,23 +20,27 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService{
 
-    @Autowired
     UserRepository userRepository;
 
-    @Autowired
     EmailService emailService;
 
-    @Autowired
     TransactionService transactionService;
 
-    @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
     JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public UserServiceImpl(EmailService emailService, UserRepository userRepository, TransactionService transactionService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+        this.emailService = emailService;
+        this.userRepository = userRepository;
+        this.transactionService = transactionService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     public BankResponse createAccount(UserRequest userRequest) {
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService{
                             .alternativePhoneNumber(userRequest.getAlternativePhoneNumber())
                             .aadharNumber(userRequest.getAadharNumber())
                             .status("ACTIVE")
-                            .role(Role.valueOf("ROLE_ADMIN".toString()))
+                            .role(Role.valueOf("ROLE_ADMIN"))
                             .build();
 
         User savedUser = userRepository.save(newUser);
@@ -280,7 +284,9 @@ public class UserServiceImpl implements UserService{
 
             destinationAccount.setAccountBalance(destinationAccount.getAccountBalance().add(request.getAmount()));
             userRepository.save(destinationAccount);
-//            String destinationUserName = destinationAccount.getFirstName() +" "+ destinationAccount.getLastName() +" "+destinationAccount.getOtherName();
+
+            //String destinationUserName = destinationAccount.getFirstName() +" "+ destinationAccount.getLastName() +" "+destinationAccount.getOtherName();
+
             EmailDetails creditAlert = EmailDetails.builder()
                     .subject("CREDIT ALERT")
                     .recipient(destinationAccount.getEmail())
